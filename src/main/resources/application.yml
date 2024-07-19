@@ -6,51 +6,52 @@ spring:
   main:
     web-application-type: reactive
   application:
-    name: api-gateway
-
-  flyway:
-    enabled: true
-    url: jdbc:postgresql://localhost:7174/jwt
-    user: baeldung
-    password: baeldung
-    locations: classpath:db/migration
-    baseline-on-migrate: true
-
-  r2dbc:
-    url: r2dbc:postgresql://localhost:7174/jwt
-    username: baeldung
-    password: baeldung
-
-  datasource:
-    url: jdbc:postgresql://localhost:7174/jwt
-    username: baeldung
-    password: baeldung
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    name: gateway
 
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders:
+              - "Origin"
+              - "Content-Type"
+              - "Accept"
+              - "Authorization"
+              - "Referer"
+            allowedMethods:
+              - POST
+              - GET
+              - OPTIONS
       routes:
-        - id: example-service
-          uri: lb://example-service
+        - id: user-service
+          uri: lb://USER-MANAGEMENT-SERVICE
           predicates:
-            - Path=/example/**
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-    stream:
-      function:
-        definition: processEvent
-      bindings:
-        processEvent-in-0:
-          destination: example-topic
-        processEvent-out-0:
-          destination: example-topic-response
+            - Path=/users/**
 
-jwt:
-  secret: mySecretKey
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            jwk-set-uri: http://localhost:9090/.well-known/jwks.json
 
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+      instance:
+        prefer-ip-address: true
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
 logging:
   level:
     root: INFO
