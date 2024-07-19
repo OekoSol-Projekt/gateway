@@ -1,0 +1,58 @@
+# application.yml
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:7174/jwt
+    user: baeldung
+    password: baeldung
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:7174/jwt
+    username: baeldung
+    password: baeldung
+
+  datasource:
+    url: jdbc:postgresql://localhost:7174/jwt
+    username: baeldung
+    password: baeldung
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  cloud:
+    gateway:
+      routes:
+        - id: example-service
+          uri: lb://example-service
+          predicates:
+            - Path=/example/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+    stream:
+      function:
+        definition: processEvent
+      bindings:
+        processEvent-in-0:
+          destination: example-topic
+        processEvent-out-0:
+          destination: example-topic-response
+
+jwt:
+  secret: mySecretKey
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.web: DEBUG
