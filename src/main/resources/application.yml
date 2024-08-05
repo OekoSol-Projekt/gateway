@@ -16,9 +16,14 @@ spring:
 
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:9090/.well-known/jwks.json
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:6060/realms/oekosol
+        registration:
+          keycloak:
+            client-id: solar-gateway
+            client-secret: 2YIlZCiJyf2GGKgkBazLKlrUajNzFAHq
 
 management:
   endpoints:
@@ -38,6 +43,8 @@ logging:
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
