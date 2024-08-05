@@ -18,6 +18,9 @@ public class GatewayApplication {
                 .route("user-management", r -> r.path("/user-management/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://USER-MANAGEMENT"))
+                .route("auth-service", r -> r.path("/auth-service/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://AUTH-SERVICE"))
                 .build();
     }
 
