@@ -21,7 +21,11 @@ public class GatewayApplication {
                 .route("auth-service", r -> r.path("/auth-service/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://AUTH-SERVICE"))
+                .route("notification-service", r -> r.path("/notification-service/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://NOTIFICATION-SERVICE"))
                 .build();
+
     }
 
     public static void main(String[] args) {
