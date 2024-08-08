@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/user-management/users/register", "/user-management/users/login", "*", "/test", "/user-management/users/**").permitAll()
                         .pathMatchers("/auth-service/**").permitAll()
+                        .pathMatchers("/actuator/prometheus").permitAll()
                         .pathMatchers("/user-management/**").permitAll()
                         .anyExchange().authenticated()
                 )
