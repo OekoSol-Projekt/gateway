@@ -24,6 +24,9 @@ public class GatewayApplication {
                 .route("notification-service", r -> r.path("/notification-service/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://NOTIFICATION-SERVICE"))
+                .route("site-management", r -> r.path("/site-management/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://SITE-MANAGEMENT"))
                 .build();
 
     }
