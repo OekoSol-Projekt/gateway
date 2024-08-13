@@ -22,7 +22,8 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/user-management/users/register", "/user-management/users/login", "*", "/test", "/user-management/users/**").permitAll()
+                        // only allow the following endpoints without authentication
+                        .pathMatchers("/user-management/users/register", "/user-management/users/login").permitAll()
                         .pathMatchers("/auth-service/**").permitAll()
                         .pathMatchers("/actuator/prometheus").permitAll()
                         .pathMatchers("/user-management/**").permitAll()
