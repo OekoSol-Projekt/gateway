@@ -17,22 +17,22 @@ public class GatewayApplication {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("user-management", r -> r.path("/user-management/**")
-                        .filters(f -> f.stripPrefix(1)
-                                .requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()))
-                                .retry(config -> config.setRetries(3).setStatuses(HttpStatus.GATEWAY_TIMEOUT))
-                                .addResponseHeader("X-Frame-Options", "DENY")
-                                .addResponseHeader("X-Content-Type-Options", "nosniff")
-                                .addResponseHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
-                                .circuitBreaker(config -> config.setName("userManagementCircuitBreaker").setFallbackUri("forward:/fallback/user-management")))
+                        .filters(f -> f.stripPrefix(1))
+//                                .requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()))
+//                                .retry(config -> config.setRetries(3).setStatuses(HttpStatus.GATEWAY_TIMEOUT))
+//                                .addResponseHeader("X-Frame-Options", "DENY")
+//                                .addResponseHeader("X-Content-Type-Options", "nosniff")
+//                                .addResponseHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+//                                .circuitBreaker(config -> config.setName("userManagementCircuitBreaker").setFallbackUri("forward:/fallback/user-management")))
                         .uri("lb://USER-MANAGEMENT"))
                 .route("auth-service", r -> r.path("/auth-service/**")
-                        .filters(f -> f.stripPrefix(1)
-                                .requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()))
-                                .retry(config -> config.setRetries(3).setStatuses(HttpStatus.GATEWAY_TIMEOUT))
-                                .addResponseHeader("X-Frame-Options", "DENY")
-                                .addResponseHeader("X-Content-Type-Options", "nosniff")
-                                .addResponseHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
-                                .circuitBreaker(config -> config.setName("authServiceCircuitBreaker").setFallbackUri("forward:/fallback/auth-service")))
+                        .filters(f -> f.stripPrefix(1))
+//                                .requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()))
+//                                .retry(config -> config.setRetries(3).setStatuses(HttpStatus.GATEWAY_TIMEOUT))
+//                                .addResponseHeader("X-Frame-Options", "DENY")
+//                                .addResponseHeader("X-Content-Type-Options", "nosniff")
+//                                .addResponseHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+//                                .circuitBreaker(config -> config.setName("authServiceCircuitBreaker").setFallbackUri("forward:/fallback/auth-service")))
                         .uri("lb://AUTH-SERVICE"))
                 .route("notification-service", r -> r.path("/notification-service/**")
                         .filters(f -> f.stripPrefix(1)
@@ -57,7 +57,7 @@ public class GatewayApplication {
 
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(10, 20); // 10 requests per second with a burst capacity of 20
+        return new RedisRateLimiter(10, 20);
     }
 
 
