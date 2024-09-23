@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         // only allow the following endpoints without authentication
                         .pathMatchers("/user-management/**").permitAll()
+                        .pathMatchers("/site-management/**").permitAll()
+                        .pathMatchers("/ftp-management-service/**").permitAll()
                         .pathMatchers("/auth-service/**").permitAll()
                         .pathMatchers("/actuator/prometheus").permitAll()
                         .anyExchange().authenticated()
